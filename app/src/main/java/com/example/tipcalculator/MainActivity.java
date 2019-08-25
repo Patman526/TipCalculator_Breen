@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,13 +20,24 @@ public class MainActivity extends AppCompatActivity {
         EditText tipText = (EditText) findViewById(R.id.tipEditText);
         TextView ansText = (TextView) findViewById(R.id.ansTextView);
 
-        int bill = Integer.parseInt(billText.getText().toString());
-        int tip = Integer.parseInt(tipText.getText().toString());
+        try {
+            int bill = Integer.parseInt(billText.getText().toString());
+            int tip = Integer.parseInt(tipText.getText().toString());
 
-        double answer = bill + (bill * ((double)tip / 100));
+            if(bill < 0 || tip < 0){
+                Toast toast = Toast.makeText(getApplicationContext(), "No negatives. Try again", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
 
-        ansText.setText("Bill: $" + bill + "\n" +
-                "Tip: " + tip + "%\n" +
-                "Final Cost: $" + answer);
+            double answer = bill + (bill * ((double) tip / 100));
+
+            ansText.setText("Bill: $" + bill + "\n" +
+                    "Tip: " + tip + "%\n" +
+                    "Final Cost: $" + answer);
+        } catch(Exception e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Invalid input. Try again", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
